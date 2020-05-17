@@ -11,7 +11,7 @@ Add ItemModifications like following:
 </Item>
 <Item>
   <ID>1169</ID>
-  <Armor>0.85</Armor>  
+  <Armor>0.55</Armor>  
 </Item>
 ```
 
