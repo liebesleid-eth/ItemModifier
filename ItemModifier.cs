@@ -25,13 +25,15 @@ namespace ItemModifier
             internal static FieldInfo Barrel_Silenced;
             internal static FieldInfo Barrel_Volume;
             internal static FieldInfo Barrel_BallisticDrop;
+
+            internal static FieldInfo Clothing_Armor;
         }
 
         protected override void Load()
         {
             Instance = this;
 
-            Log("Item Modifier by SilK");
+            Log($"Item Modifier {Assembly.GetName().Version} by SilK");
             Log("Loading item modifications...");
 
             Type type = typeof(ItemBagAsset);
@@ -51,6 +53,9 @@ namespace ItemModifier
             Fields.Barrel_Braked = type.GetField("_isBraked", BindingFlags.NonPublic | BindingFlags.Instance);
             Fields.Barrel_Silenced = type.GetField("_isSilenced", BindingFlags.NonPublic | BindingFlags.Instance);
             Fields.Barrel_Volume = type.GetField("_volume", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            type = typeof(ItemClothingAsset);
+            Fields.Clothing_Armor = type.GetField("_armor", BindingFlags.NonPublic | BindingFlags.Instance);
 
             foreach (ItemModification modification in Configuration.Instance.Items)
             {
@@ -122,7 +127,7 @@ namespace ItemModifier
                 modification.VehicleDamage.HasValue || 
                 modification.ResourceDamage.HasValue ||
                 modification.ObjectDamage.HasValue ||
-                modification.Invulnerable.HasValue) // Isn't this pretty?
+                modification.Invulnerable.HasValue) // Isn't this pretty? RE: epik
             {
                 if (asset is ItemWeaponAsset)
                 {
@@ -211,6 +216,18 @@ namespace ItemModifier
                 else
                 {
                     LogError("Item ID {0} isn't a barrel.");
+                }
+            }
+
+            if (modification.Armor.HasValue)
+            {
+                if (asset is ItemClothingAsset)
+                {
+                    ItemClothingAsset clothingAsset = asset as ItemClothingAsset;
+                    if (modification.Armor.HasValue) SetArmor(clothingAsset, modification.Armor.Value);
+                } else
+                {
+                    LogError("Item ID {0} isn't a clothing.");
                 }
             }
         }
@@ -483,6 +500,20 @@ namespace ItemModifier
             }
 
             Fields.Barrel_Volume.SetValue(asset, volume);
+            return true;
+        }
+        #endregion
+
+        #region Clothing
+        public static bool SetArmor(ItemClothingAsset asset, float armor)
+        {
+            if (Fields.Clothing_Armor == null)
+            {
+                LogError("Setting armor of Item ID {0}", asset.id);
+                return false;
+            }
+
+            Fields.Clothing_Armor.SetValue(asset, armor);
             return true;
         }
         #endregion

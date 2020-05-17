@@ -93,6 +93,11 @@ namespace ItemModifier
         [XmlElement(IsNullable = false)]
         public float? Volume;
         #endregion
+
+        #region Clothing
+        [XmlElement(IsNullable = false)]
+        public float? Armor;
+        #endregion
     }
 
     public class ItemModifierConfiguration : IRocketPluginConfiguration
