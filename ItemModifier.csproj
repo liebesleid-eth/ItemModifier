@@ -61,12 +61,13 @@
       <HintPath>lib\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
-	<Reference Include="UnityEngine.CoreModule">
+    <Reference Include="UnityEngine.CoreModule">
       <HintPath>lib\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ItemModification.cs" />
     <Compile Include="ItemModifier.cs" />
     <Compile Include="ItemModifierConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
