@@ -107,7 +107,23 @@ namespace ItemModifier
 
         public void LoadDefaults()
         {
-            Items = new List<ItemModification>();
+            Items = new List<ItemModification>()
+            {
+                new ItemModification()
+                {
+                    ID = 363,
+                    PlayerDamage = 40,
+                    PlayerLegMultiplier = 0.6f,
+                    PlayerArmMultiplier = 0.6f,
+                    PlayerSpineMultiplier = 0.8f,
+                    PlayerSkullMultiplier = 1.1f
+                },
+                new ItemModification()
+                {
+                    ID = 310,
+                    Armor = 0.7f
+                }
+            };
         }
     }
 }
