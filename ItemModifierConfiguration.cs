@@ -6,11 +6,13 @@ namespace ItemModifier
 {
     public class ItemModifierConfiguration : IRocketPluginConfiguration
     {
+        public bool LoadAfterWorkshop { get; set; }
         [XmlArrayItem(ElementName = "Item")]
         public List<ItemModification> Items { get; set; }
 
         public void LoadDefaults()
         {
+            LoadAfterWorkshop = false;
             Items = new List<ItemModification>()
             {
                 new ItemModification()

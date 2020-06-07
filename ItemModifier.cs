@@ -36,6 +36,22 @@ namespace ItemModifier
             Log($"Item Modifier {Assembly.GetName().Version} by SilK");
             Log("Loading item modifications...");
 
+            if (!Configuration.Instance.LoadAfterWorkshop || Level.isLoaded)
+            {
+                LoadItemModifications(0);
+            } else
+            {
+                Level.onPreLevelLoaded += LoadItemModifications;
+            }
+        }
+
+        protected override void Unload()
+        {
+            Level.onPreLevelLoaded -= LoadItemModifications;
+        }
+
+        private static void LoadItemModifications(int a)
+        {
             Type type = typeof(ItemBagAsset);
             Fields.Width = type.GetField("_width", BindingFlags.NonPublic | BindingFlags.Instance);
             Fields.Height = type.GetField("_height", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -57,7 +73,7 @@ namespace ItemModifier
             type = typeof(ItemClothingAsset);
             Fields.Clothing_Armor = type.GetField("_armor", BindingFlags.NonPublic | BindingFlags.Instance);
 
-            foreach (ItemModification modification in Configuration.Instance.Items)
+            foreach (ItemModification modification in Instance.Configuration.Instance.Items)
             {
                 Modify(modification);
             }
