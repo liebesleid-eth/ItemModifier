@@ -6,28 +6,22 @@ namespace ItemModifier
 {
     public class ItemModifierConfiguration : IRocketPluginConfiguration
     {
-        public bool LoadAfterWorkshop { get; set; }
-        [XmlArrayItem(ElementName = "Item")]
-        public List<ItemModification> Items { get; set; }
+        public List<ItemModifications> Items { get; set; }
 
         public void LoadDefaults()
         {
-            LoadAfterWorkshop = false;
-            Items = new List<ItemModification>()
+            Items = new List<ItemModifications>()
             {
-                new ItemModification()
+                new ItemModifications()
                 {
-                    ID = 363,
-                    PlayerDamage = 40,
-                    PlayerLegMultiplier = 0.6f,
-                    PlayerArmMultiplier = 0.6f,
-                    PlayerSpineMultiplier = 0.8f,
-                    PlayerSkullMultiplier = 1.1f
-                },
-                new ItemModification()
-                {
-                    ID = 310,
-                    Armor = 0.7f
+                    Id = 363,
+                    Modifications = new ItemModifications.Modification[]
+                    {
+                        new ItemModifications.Modification("isInvulnerable", "true"),
+                        new ItemModifications.Modification("structureDamage", "300"),
+                        new ItemModifications.Modification("barricadeDamage", "300"),
+                        new ItemModifications.Modification("ammoMax", "255")
+                    }
                 }
             };
         }
