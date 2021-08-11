@@ -67,7 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ItemModifications.cs" />
+    <Compile Include="ItemModification.cs" />
     <Compile Include="ItemModifier.cs" />
     <Compile Include="ItemModifierConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
