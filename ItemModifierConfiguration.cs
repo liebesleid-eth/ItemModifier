@@ -18,6 +18,7 @@ namespace ItemModifier
                 new ItemModification()
                 {
                     ID = 363,
+                    Name = "Maplestrike",
                     PlayerDamage = 40,
                     PlayerLegMultiplier = 0.6f,
                     PlayerArmMultiplier = 0.6f,
@@ -27,7 +28,15 @@ namespace ItemModifier
                 new ItemModification()
                 {
                     ID = 310,
+                    Name = "Forest Military Vest",
                     Armor = 0.7f
+                },
+                new ItemModification()
+                {
+                    ID = 458,
+                    Name = "Portable Generator",
+                    GeneratorCapacity = 2000,
+                    GeneratorBurn = 20
                 }
             };
         }

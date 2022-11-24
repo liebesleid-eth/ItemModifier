@@ -7,8 +7,8 @@ namespace ItemModifier
     {        
         [XmlAttribute]
         public ushort ID { get; set; }
-
-        // I hate XML
+        [XmlAttribute]
+        public string Name { get; set; }
 
         #region Bags
         public byte? Width { get; set; }
@@ -98,6 +98,13 @@ namespace ItemModifier
         #region Clothing
         public float? Armor { get; set; }
         public bool ShouldSerializeArmor() => Armor != null;
+        #endregion
+
+        #region Generators
+        public ushort? GeneratorCapacity { get; set; }
+        public bool ShouldSerializeGeneratorCapacity() => GeneratorCapacity != null;
+        public float? GeneratorBurn { get; set; }
+        public bool ShouldSerializeGeneratorBurn() => GeneratorBurn != null;
         #endregion
     }
 }

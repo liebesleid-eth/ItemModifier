@@ -2,6 +2,7 @@
 using Rocket.Core.Plugins;
 using SDG.Unturned;
 using System;
+using System.CodeDom;
 using System.Reflection;
 
 namespace ItemModifier
@@ -27,13 +28,16 @@ namespace ItemModifier
             internal static FieldInfo Barrel_BallisticDrop;
 
             internal static FieldInfo Clothing_Armor;
+
+            internal static FieldInfo Generator_Capacity;
+            internal static FieldInfo Generator_Burn;
         }
 
         protected override void Load()
         {
             Instance = this;
 
-            Log($"Item Modifier {Assembly.GetName().Version} by SilK");
+            Log($"Item Modifier {Assembly.GetName().Version} by SilK updated by RestoreMonarchy");
             Log("Loading item modifications...");
 
             if (!Configuration.Instance.LoadAfterWorkshop || Level.isLoaded)
@@ -72,6 +76,10 @@ namespace ItemModifier
 
             type = typeof(ItemClothingAsset);
             Fields.Clothing_Armor = type.GetField("_armor", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            type = typeof(ItemGeneratorAsset);
+            Fields.Generator_Capacity = type.GetField("_capacity", BindingFlags.Instance | BindingFlags.NonPublic);
+            Fields.Generator_Burn = type.GetField("_burn", BindingFlags.Instance | BindingFlags.NonPublic);
 
             foreach (ItemModification modification in Instance.Configuration.Instance.Items)
             {
@@ -244,6 +252,21 @@ namespace ItemModifier
                 } else
                 {
                     LogError("Item ID {0} isn't a clothing.");
+                }
+            }
+
+            if (modification.GeneratorCapacity.HasValue ||
+                modification.GeneratorBurn.HasValue)
+            {
+                if (asset is ItemGeneratorAsset)
+                {
+                    ItemGeneratorAsset generatorAsset = asset as ItemGeneratorAsset;
+                    if (modification.GeneratorCapacity.HasValue) SetGeneratorCapacity(generatorAsset, modification.GeneratorCapacity.Value);
+                    if (modification.GeneratorBurn.HasValue) SetGeneratorBurn(generatorAsset, modification.GeneratorBurn.Value);
+                }
+                else
+                {
+                    LogError("Item ID {0} isn't a generator.");
                 }
             }
         }
@@ -530,6 +553,32 @@ namespace ItemModifier
             }
 
             Fields.Clothing_Armor.SetValue(asset, armor);
+            return true;
+        }
+        #endregion
+
+        #region Generators
+        public static bool SetGeneratorCapacity(ItemGeneratorAsset asset, ushort capacity)
+        {
+            if (Fields.Generator_Capacity == null)
+            {
+                LogError("Setting generator capacity of Item ID {0}", asset.id);
+                return false;
+            }
+
+            Fields.Generator_Capacity.SetValue(asset, capacity);
+            return true;
+        }
+
+        public static bool SetGeneratorBurn(ItemGeneratorAsset asset, float burn)
+        {
+            if (Fields.Generator_Burn == null)
+            {
+                LogError("Setting generator burn of Item ID {0}", asset.id);
+                return false;
+            }
+
+            Fields.Generator_Burn.SetValue(asset, burn);
             return true;
         }
         #endregion
