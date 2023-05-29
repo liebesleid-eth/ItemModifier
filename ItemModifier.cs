@@ -228,17 +228,13 @@ namespace ItemModifier
             
             if (modification.Vulnerable.HasValue)
             {
-              if (asset is ItemStructureAsset)
+              if (asset is ItemBarricadeAsset)
               {
-                SetIsVulnerable(asset as ItemStructureAsset, modification.Vulnerable.Value);
-              }
-              else if (asset is ItemBarricadeAsset)
-              {
-                SetIsInvulnerable (asset as ItemBarricadeAsset, modification.Vulnerable.Value);
+                SetIsVulnerable(asset as ItemBarricadeAsset, modification.Vulnerable.Value);
               }
               else
               {
-                LogError("Item ID {0} doesn't have an vulnerable tag.")
+                LogError("Item ID {0} doesn't have an vulnerable tag.");
               }
 
             }
@@ -336,7 +332,8 @@ namespace ItemModifier
             LogError("Setting Explosion of Item ID {0}", asset.id);
             return false;
           }
-          Fields.Barricade_IsVulnerable.SetValue(asset, isVulnerable)
+            Fields.Barricade_IsVulnerable.SetValue(asset, isVulnerable);
+            return true;
         }        
 
         public static bool SetExplosion(ItemBarricadeAsset asset, ushort explosion)
