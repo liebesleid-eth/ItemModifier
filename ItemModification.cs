@@ -20,6 +20,8 @@ namespace ItemModifier
         #region Structures/Barricades
         public ushort? Health { get; set; }
         public bool ShouldSerializeHealth() => Health != null;
+        public bool? Vulnerable { get; set; }
+        public bool ShouldSerializeVulnerable() => Vulnerable != null;
         #endregion
 
         #region Weapons

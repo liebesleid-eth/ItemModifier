@@ -18,6 +18,7 @@ namespace ItemModifier
 
             internal static FieldInfo Barricade_Health;
             internal static FieldInfo Barricade_Explosion;
+            internal static FieldInfo Barricade_IsVulnerable;
 
             internal static FieldInfo Structure_Health;
             internal static FieldInfo Structure_Explosion;
@@ -63,6 +64,7 @@ namespace ItemModifier
             type = typeof(ItemBarricadeAsset);
             Fields.Barricade_Health = type.GetField("_health", BindingFlags.NonPublic | BindingFlags.Instance);
             Fields.Barricade_Explosion = type.GetField("_explosion", BindingFlags.NonPublic | BindingFlags.Instance);
+            Fields.Barricade_IsVulnerable = type.GetField("_isVulnerable", BindingFlags.NonPublic | BindingFlags.Instance);
 
             type = typeof(ItemStructureAsset);
             Fields.Structure_Health = type.GetField("_health", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -224,6 +226,23 @@ namespace ItemModifier
                 }
             }
             
+            if (modification.Vulnerable.HasValue)
+            {
+              if (asset is ItemStructureAsset)
+              {
+                SetIsVulnerable(asset as ItemStructureAsset, modification.Vulnerable.Value);
+              }
+              else if (asset is ItemBarricadeAsset)
+              {
+                SetIsInvulnerable (asset as ItemBarricadeAsset, modification.Vulnerable.Value);
+              }
+              else
+              {
+                LogError("Item ID {0} doesn't have an vulnerable tag.")
+              }
+
+            }
+            
             if (modification.BallisticDrop.HasValue ||
                 modification.Braked.HasValue ||
                 modification.Silenced.HasValue ||
@@ -309,6 +328,16 @@ namespace ItemModifier
             Fields.Barricade_Health.SetValue(asset, health);
             return true;
         }
+
+        public static bool SetIsVulnerable(ItemBarricadeAsset asset, bool isVulnerable)
+        {
+          if (Fields.Barricade_IsVulnerable == null)
+          {
+            LogError("Setting Explosion of Item ID {0}", asset.id);
+            return false;
+          }
+          Fields.Barricade_IsVulnerable.SetValue(asset, isVulnerable)
+        }        
 
         public static bool SetExplosion(ItemBarricadeAsset asset, ushort explosion)
         {
